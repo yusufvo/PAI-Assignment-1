@@ -1,4 +1,3 @@
-
 allPosts = [
   {'id': 1, 'text': 'I LOVE the new #GulPhone! Battery life is amazing.'},
   {'id': 2, 'text': 'My #GulPhone is a total disaster. The screen is already broken!'},
@@ -39,8 +38,9 @@ def analyzePosts(postsList, punctuation, stopwords, positive, negative):
         })
     return analyzed_posts
 
-def getFlaggedPosts(scoredPosts, threshold =-1):
-    return [post for post in scoredPosts if post['score'] <= threshold]
+def getFlaggedPosts(scoredPosts, sentimentThreshold=-1):
+    return [post for post in scoredPosts if post['score'] <= sentimentThreshold]
+
 def findNegativeTopics(flaggedPosts):
     topic_counts = {}
     for post in flaggedPosts:
@@ -48,20 +48,20 @@ def findNegativeTopics(flaggedPosts):
         for word in words:
             if word.startswith('#') or word.startswith('@'):
                 cleanedTopic = "".join(char for char in word if char not in PUNCTUATION_CHARS).lower()
-                
-                count= [cleanedTopic] = topic_counts.get(cleanedTopic, 0) + 1
-
-    return count
+                topic_counts[cleanedTopic] = topic_counts.get(cleanedTopic, 0) + 1
+    return topic_counts
 
 scored_posts = analyzePosts(allPosts,PUNCTUATION_CHARS,STOPWORDS_SET,POSITIVE_WORDS_SET,NEGATIVE_WORDS_SET)
 
 print("*Scored Posts*\n")
 print(scored_posts)
 print("\n")
+
 flaggedposts = getFlaggedPosts(scored_posts, sentimentThreshold=-1)
 print("*Flagged Posts*\n")
 print(flaggedposts)
 print("\n")
+
 negativetopics = findNegativeTopics(flaggedposts)
 print("*Negative Topics*\n")
 print(negativetopics)
