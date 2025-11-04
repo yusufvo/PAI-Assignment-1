@@ -1,4 +1,5 @@
 from itertools import combinations
+
 transactionLog = [
   {'orderId': '1001', 'customerId': 'cust_Ahmed', 'productId': 'prod_10'},
   {'orderId': '1001', 'customerId': 'cust_Ahmed', 'productId': 'prod_12'},
@@ -14,6 +15,7 @@ productCatalog = {
   'prod_12': 'Keyboard',
   'prod_15': 'USB-C Hub',
 }
+
 # 1. Transform Data
 def processtransactions(transactionLog):
     uniqueproducts={}
@@ -25,7 +27,9 @@ def processtransactions(transactionLog):
         else:
             uniqueproducts[customerID].add(productId)
     return uniqueproducts
+
 print(processtransactions(transactionLog))
+
 # 2. Find Pairs
 def findFrequentPairs(transactionLog):
     orders = {}
@@ -75,11 +79,11 @@ def getRecommendations(targetProductId, frequentPairs):
     recommendations.sort(key=lambda x: x[1], reverse=True)
     
     return recommendations
-# 4. Report Generqtion
+
+# 4. Report Generation
 def generateReport(targetProductId, recommendations, catalog):
-    print("-------------------------------------------------")
-    print(f"Product Recommendation Report for: {catalog[targetProductId]}")
-    print("-------------------------------------------------")
+    product_name = catalog.get(targetProductId, "Unknown Product")
+    print(f"Product Recommendation Report for: {product_name}")
     
     if not recommendations:
         print("No recommendations found.")
@@ -98,7 +102,6 @@ frequent_pairs = findFrequentPairs(transactionLog)
 target_product = 'prod_10'
 recommendations = getRecommendations(target_product, frequent_pairs)
 generateReport(target_product, recommendations, productCatalog)
-
 target_product_2 = 'prod_11'
 recommendations_2 = getRecommendations(target_product_2, frequent_pairs)
 generateReport(target_product_2, recommendations_2, productCatalog)
